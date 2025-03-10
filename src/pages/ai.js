@@ -15,7 +15,9 @@ export default function AIChat() {
                     <p className="text-lg">Открыт чат {activeChat}</p>
                 ) : (
                     <div className="text-center text-gray-500">
-                        <p>Это начало вашей консультации с</p>
+                        {/* <p>Это начало вашей консультации с</p> */}
+                        <p>скора все будет</p>
+
                         <h1 className="text-2xl font-bold text-gray-700">QUNAR.AI</h1>
                     </div>
                 )}
