@@ -21,7 +21,7 @@ export default function Home() {
           style={{ backgroundImage: "url('/hero-bg.png')" }}
         >
           <h1 className="text-white text-5xl font-bold mb-4">
-            Представляем вам <span className="text-green-400">QUNAR</span>
+            Представляем вам <span className="text-green-400" style={{ fontFamily: 'Josefin Sans, sans-serif' }}>QUNAR</span>
           </h1>
           <p className="text-white text-lg mb-8">
             Спаситель ваших грядок и вашего сада

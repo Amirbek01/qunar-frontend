@@ -6,7 +6,7 @@ export default function Features() {
         <section className="bg-white py-16">
             <div className="max-w-7xl mx-auto px-6">
                 <h2 className="text-3xl font-bold text-center mb-12">
-                    Особенности <span className="text-green-500">QUNAR</span>
+                    Особенности <span className="text-green-500"                 style={{ fontFamily: 'Josefin Sans, sans-serif' }}>QUNAR</span>
                 </h2>
 
                 {/* 🔥 Блок 1 (Картинка справа) */}

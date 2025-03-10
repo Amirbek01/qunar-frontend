@@ -1,11 +1,24 @@
-import { useUserStore } from '@/store/useUserStore';
-import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 export default function Header() {
-    const { user, logout } = useUserStore();
+    const router = useRouter();
     const [search, setSearch] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        // Проверяем наличие токена в localStorage (если он есть, пользователь залогинен)
+        const token = localStorage.getItem('token');
+        setIsLoggedIn(!!token);
+    }, []);
+
+    function handleLogout() {
+        localStorage.removeItem('token'); // Удаляем токен
+        setIsLoggedIn(false);
+        router.push('/login'); // Перенаправляем на страницу входа
+    }
 
     return (
         <header className="w-full bg-transparent absolute top-0 left-0 z-50">
@@ -14,7 +27,9 @@ export default function Header() {
                 <Link href="/">
                     <div className="flex items-center gap-2 cursor-pointer">
                         <img src="/logo.png" alt="QUNAR Logo" className="w-10 h-10" />
-                        <span className="text-2xl font-bold text-white">QUNAR</span>
+                        <span className="text-2xl font-bold text-white" style={{ fontFamily: 'Josefin Sans, sans-serif' }}>
+                            QUNAR
+                        </span>
                     </div>
                 </Link>
 
@@ -44,13 +59,13 @@ export default function Header() {
                         <FaShoppingCart className="text-white text-2xl cursor-pointer hover:text-green-400" />
                     </Link>
 
-                    {user ? (
-                        <div className="flex items-center gap-2 cursor-pointer" onClick={logout}>
+                    {isLoggedIn ? (
+                        <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogout}>
                             <FaUserCircle className="text-white text-2xl hover:text-red-400" />
                             <span className="text-white hidden md:block">Выйти</span>
                         </div>
                     ) : (
-                        <Link href="/auth">
+                        <Link href="/login">
                             <FaUserCircle className="text-white text-2xl cursor-pointer hover:text-green-400" />
                         </Link>
                     )}
