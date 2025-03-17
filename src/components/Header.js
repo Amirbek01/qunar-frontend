@@ -35,25 +35,15 @@ export default function Header() {
 
                 {/* Навигация */}
                 <ul className="hidden md:flex gap-8 text-white font-medium">
-                    <li><Link href="/">Домой</Link></li>
-                    <li><Link href="/products">Продукты</Link></li>
-                    <li><Link href="/sustainability">Устойчивость</Link></li>
+                    <li><a href="#products">Продукты</a></li>
+                    <li><Link href="#sustainability">Устойчивость</Link></li>
                     <li><Link href="/about">О нас</Link></li>
                     <li><Link href="/ai">QUNAR.AI</Link></li>
                 </ul>
 
                 {/* Поиск + Иконки */}
                 <div className="flex items-center gap-6">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Поиск..."
-                            className="rounded-full py-1 pl-4 pr-10 bg-white/80 text-gray-700 focus:outline-none"
-                        />
-                        <FaSearch className="absolute right-3 top-2 text-gray-600 cursor-pointer" />
-                    </div>
+
 
                     <Link href="/busket">
                         <FaShoppingCart className="text-white text-2xl cursor-pointer hover:text-green-400" />

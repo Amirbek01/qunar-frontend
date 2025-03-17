@@ -1,27 +1,51 @@
 import { useState } from "react";
-import ChatSidebar from "@/components/ChatSidebar";
 
 export default function AIChat() {
-    const [activeChat, setActiveChat] = useState(null);
+    const [message, setMessage] = useState("");
+    const [response, setResponse] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const sendMessage = async () => {
+        if (!message) return;
+
+        setLoading(true);
+        setResponse("");
+
+        const res = await fetch("/api/ai", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: message }),
+        });
+
+        const data = await res.json();
+        setResponse(data.response);
+        setLoading(false);
+    };
 
     return (
-        <div className="flex h-screen">
-            {/* Боковая панель с чатами */}
-            <ChatSidebar activeChat={activeChat} setActiveChat={setActiveChat} />
+        <div className="max-w-2xl mx-auto py-10">
+            <h1 className="text-2xl font-bold text-center">🤖 Чат с AI</h1>
 
-            {/* Основное окно чата */}
-            <main className="flex-1 flex flex-col items-center justify-center bg-gray-100 p-6">
-                {activeChat ? (
-                    <p className="text-lg">Открыт чат {activeChat}</p>
-                ) : (
-                    <div className="text-center text-gray-500">
-                        {/* <p>Это начало вашей консультации с</p> */}
-                        <p>скора все будет</p>
+            <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Введите сообщение..."
+                className="w-full p-3 border rounded-md mt-5"
+            />
 
-                        <h1 className="text-2xl font-bold text-gray-700">QUNAR.AI</h1>
-                    </div>
-                )}
-            </main>
+            <button
+                onClick={sendMessage}
+                className="w-full bg-green-500 text-white py-2 mt-3 rounded-md hover:bg-green-600"
+                disabled={loading}
+            >
+                {loading ? "AI думает..." : "Отправить"}
+            </button>
+
+            {response && (
+                <div className="mt-5 p-3 bg-gray-100 border rounded-md">
+                    <strong>Ответ:</strong> {response}
+                </div>
+            )}
         </div>
     );
 }

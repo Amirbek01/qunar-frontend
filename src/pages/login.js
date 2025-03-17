@@ -38,8 +38,8 @@ export default function Login() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url(/images/auth-bg.jpg)' }}>
-            <div className="bg-white bg-opacity-20 p-8 rounded-lg w-full max-w-md text-center">
+        <div className="flex items-center justify-center min-h-screen bg-cover bg-center" >
+            <div className="bg-[rgba(68,68,68,1)]  bg-opacity-30 p-8 rounded-[38px] w-full max-w-md text-center">
                 <h1 className="text-4xl font-bold text-white">QUNAR</h1>
                 <p className="text-white mt-2">Спаситель ваших грядок и вашего сада</p>
 

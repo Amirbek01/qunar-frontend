@@ -4,7 +4,7 @@ import { GiFarmTractor } from 'react-icons/gi';
 
 export default function Sustainability() {
     return (
-        <section className="relative bg-custom-dark text-white py-16">
+        <section className="relative bg-custom-dark text-white py-16 " id='sustainability'> 
             {/* Волнистая верхняя граница */}
             {/* <div className="absolute top-0 w-full overflow-hidden leading-[0] rotate-180">
                 <svg viewBox="0 0 500 150" preserveAspectRatio="none" className="w-full h-16">

@@ -7,8 +7,10 @@ import Sustainability from '@/components/Sustainability';
 import FaqSection from '@/components/FaqSection';
 import AboutSection from '@/components/AboutSection';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function Home() {
+
   return (
     <>
       <Head>
@@ -26,15 +28,17 @@ export default function Home() {
           <p className="text-white text-lg mb-8">
             Спаситель ваших грядок и вашего сада
           </p>
-          <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-500 transition">
-            ПОПРОБОВАТЬ
-          </button>
+          <Link href="/ai">
+            <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-500 transition">
+              ПОПРОБОВАТЬ
+            </button>
+          </Link>
+
         </section>
 
         {/* 🔥 Новый блок "Особенности" */}
         <Features />
 
-        <AiSection />
 
         <ProductSection />
 
