@@ -1,16 +1,28 @@
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
-
-
 export default function AIChat() {
     const [messages, setMessages] = useState([]);  // Список сообщений
-    const [input, setInput] = useState("");         // Текстовое поле
-    const [loading, setLoading] = useState(false);  // Индикатор загрузки
+    const [input, setInput] = useState("");        // Текстовое поле
+    const [loading, setLoading] = useState(false); // Индикатор загрузки
+    const [showIntro, setShowIntro] = useState(true); // Показывать ли интро
+    
+    const chatContainerRef = useRef(null);
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    // Скрыть интро, когда появляются сообщения
+    useEffect(() => {
+        if (messages.length > 0) {
+            setShowIntro(false);
+        }
+    }, [messages]);
+
+    // Прокрутка чата вниз при новых сообщениях
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
 
     const sendMessage = async () => {
         if (!input.trim()) {
@@ -27,7 +39,7 @@ export default function AIChat() {
         
         try {
             console.log("Отправка запроса на сервер...");
-            const response = await fetch("/api/generate", {  // Используем внутренний API роут
+            const response = await fetch("/api/generate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -50,50 +62,47 @@ export default function AIChat() {
                 setMessages((prev) => [...prev, aiMessage]);
             } else {
                 console.warn("Ответ не содержит 'response':", data);
-                // Добавляем сообщение об ошибке в чат
                 const errorMessage = { role: "ai", text: "Произошла ошибка при обработке ответа." };
                 setMessages((prev) => [...prev, errorMessage]);
             }
         } catch (error) {
             console.error("Ошибка при отправке запроса:", error);
-            // Добавляем сообщение об ошибке в чат
             const errorMessage = { role: "ai", text: "Извините, не удалось отправить запрос. Проверьте подключение." };
             setMessages((prev) => [...prev, errorMessage]);
         }
     
         setInput("");
         setLoading(false);
-
-        const renderMessage = (msg) => {
-            if (msg.role === "user") {
-                return <div className="text-white">{msg.text}</div>;
-            } else {
-                return (
-                    <ReactMarkdown
-                        className="markdown-content text-gray-800"
-                        components={{
-                            // Настройка стилей для разных элементов markdown
-                            h1: ({node, ...props}) => <h1 className="text-xl font-bold my-2" {...props} />,
-                            h2: ({node, ...props}) => <h2 className="text-lg font-bold my-2" {...props} />,
-                            h3: ({node, ...props}) => <h3 className="text-md font-bold my-1" {...props} />,
-                            p: ({node, ...props}) => <p className="my-1" {...props} />,
-                            ul: ({node, ...props}) => <ul className="list-disc pl-5 my-2" {...props} />,
-                            ol: ({node, ...props}) => <ol className="list-decimal pl-5 my-2" {...props} />,
-                            li: ({node, ...props}) => <li className="my-1" {...props} />,
-                            a: ({node, ...props}) => <a className="text-blue-600 hover:underline" {...props} target="_blank" rel="noopener noreferrer" />,
-                            code: ({node, inline, ...props}) => 
-                                inline 
-                                    ? <code className="bg-gray-100 px-1 rounded text-red-600" {...props} />
-                                    : <code className="block bg-gray-100 p-2 rounded my-2 overflow-x-auto text-sm" {...props} />
-                        }}
-                    >
-                        {msg.text}
-                    </ReactMarkdown>
-                );
-            }
-    
     };
-    }
+
+    // Функция для рендеринга сообщения с поддержкой Markdown для AI сообщений
+    const renderMessage = (msg) => {
+        if (msg.role === "user") {
+            return <div className="text-white">{msg.text}</div>;
+        } else {
+            return (
+                <ReactMarkdown
+                    className="markdown-content text-gray-800"
+                    components={{
+                        h1: ({node, ...props}) => <h1 className="text-xl font-bold my-2" {...props} />,
+                        h2: ({node, ...props}) => <h2 className="text-lg font-bold my-2" {...props} />,
+                        h3: ({node, ...props}) => <h3 className="text-md font-bold my-1" {...props} />,
+                        p: ({node, ...props}) => <p className="my-1" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc pl-5 my-2" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal pl-5 my-2" {...props} />,
+                        li: ({node, ...props}) => <li className="my-1" {...props} />,
+                        a: ({node, ...props}) => <a className="text-blue-600 hover:underline" {...props} target="_blank" rel="noopener noreferrer" />,
+                        code: ({node, inline, ...props}) => 
+                            inline 
+                                ? <code className="bg-gray-100 px-1 rounded text-red-600" {...props} />
+                                : <code className="block bg-gray-100 p-2 rounded my-2 overflow-x-auto text-sm" {...props} />
+                    }}
+                >
+                    {msg.text}
+                </ReactMarkdown>
+            );
+        }
+    };
 
     return (
         <>
@@ -125,15 +134,21 @@ export default function AIChat() {
                 </div>
             </header>
 
-            {/* 🔹 Чат AI */}
-            <section className="h-screen flex flex-col justify-center items-center bg-white">
-                <div className="text-center mb-6">
-                    <h1 className="text-gray-600 text-lg mt-2">Это начало вашей консультации с</h1>
-                    <h2 className="text-gray-800 text-2xl font-semibold">QUNAR.AI</h2>
-                </div>
+            {/* 🔹 Чат AI - занимает весь доступный экран */}
+            <section className="flex flex-col h-[calc(100vh-88px)] bg-white">
+                {/* Показываем интро только если нет сообщений */}
+                {showIntro && (
+                    <div className="text-center my-6">
+                        <h1 className="text-gray-600 text-lg">Это начало вашей консультации с</h1>
+                        <h2 className="text-gray-800 text-2xl font-semibold">QUNAR.AI</h2>
+                    </div>
+                )}
 
                 {/* Окно сообщений */}
-                <div className="w-full max-w-3xl h-96 bg-gray-100 rounded-lg shadow-md overflow-y-auto p-4">
+                <div 
+                    ref={chatContainerRef}
+                    className="flex-grow w-full max-w-5xl mx-auto bg-gray-100 rounded-lg shadow-md overflow-y-auto p-4 scrollbar-hidden group"
+                >
                     {messages.length === 0 ? (
                         <p className="text-gray-400 text-center">Здесь появятся ваши сообщения...</p>
                     ) : (
@@ -141,10 +156,10 @@ export default function AIChat() {
                             <div
                                 key={index}
                                 className={`mb-3 p-3 rounded-lg ${
-                                    msg.role === "user" ? "bg-green-500 text-white self-end" : "bg-gray-200 text-gray-800"
+                                    msg.role === "user" ? "bg-green-500 text-white self-end" : "bg-gray-200"
                                 }`}
                             >
-                                {msg.text}
+                                {renderMessage(msg)}
                             </div>
                         ))
                     )}
@@ -152,10 +167,10 @@ export default function AIChat() {
                 </div>
 
                 {/* Поле ввода */}
-                <div className="mt-4 flex items-center w-full max-w-3xl">
+                <div className="mt-auto p-4 flex items-center w-full max-w-5xl mx-auto">
                     <input
                         type="text"
-                        className="flex-1 px-4 py-2 border-t border-b border-gray-300 focus:outline-none"
+                        className="flex-1 px-4 py-3 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                         placeholder="Чем могу быть полезен?"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
@@ -163,7 +178,7 @@ export default function AIChat() {
                     />
                     <button
                         onClick={sendMessage}
-                        className="px-4 py-2 border rounded-r-lg bg-green-500 text-white hover:bg-green-600"
+                        className="px-6 py-3 rounded-r-lg bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-700"
                     >
                         ▶️
                     </button>
