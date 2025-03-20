@@ -6,13 +6,13 @@ export default function Features() {
         <section className="bg-white py-16">
             <div className="max-w-7xl mx-auto px-6">
                 <h2 className="text-3xl font-bold text-center mb-12">
-                    Особенности <span className="text-green-500"                 style={{ fontFamily: 'Josefin Sans, sans-serif' }}>QUNAR</span>
+                    Особенности <span className="text-green-500" style={{ fontFamily: 'Josefin Sans, sans-serif' }}>QUNAR</span>
                 </h2>
 
                 {/* 🔥 Блок 1 (Картинка справа) */}
                 <div className="flex flex-col-reverse md:flex-row items-center bg-custom-dark rounded-lg p-8 mb-16 gap-8">
-                    <div className="text-white md:w-1/2 space-y-4">
-                        <p>
+                    <div className="text-white md:w-1/2 space-y-4 p-12">
+                        <p className='text-xl'>
                             Мы внедряем искусственный интеллект для повышения удобства и
                             эффективности использования нашего продукта.
                         </p>
@@ -32,7 +32,7 @@ export default function Features() {
                 </div>
 
                 {/* 🔍 Блок 2 (Картинка слева) */}
-                <div className="flex flex-col md:flex-row items-center bg-custom-dark rounded-lg p-8 mb-16 gap-8">
+                <div className="flex flex-col-reverse md:flex-row items-center bg-custom-dark rounded-lg p-12 mb-16 gap-8 h-400px">
                     <div className="md:w-1/2 flex justify-center">
                         <Image
                             src="/analysis-feature.png"

@@ -1,4 +1,12 @@
+import React from 'react';
+
 export default function FaqSection() {
+
+
+function sendContant() {
+    alert('Служба поддержки: 87071234567');
+}
+
     return (
         <section className="bg-white">
             <div className="px-6 py-10">
@@ -8,7 +16,7 @@ export default function FaqSection() {
                     <br />
                     Если вы всё же не нашли чего искали — обратитесь в поддержку и свяжитесь с нами!
                 </p>
-                <button className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition">
+                <button onClick={sendContant} className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition">
                     Служба поддержки
                 </button>
             </div>

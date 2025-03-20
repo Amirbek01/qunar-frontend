@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const response = await fetch("http://176.123.178.135/9090/generate", {
+        const response = await fetch("http://176.123.178.135:9090/generate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

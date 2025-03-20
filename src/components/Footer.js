@@ -1,10 +1,6 @@
 export default function Footer() {
     const footerData = [
         { title: 'Контакты', address: 'Примерова 6дА', phone: '+7 777 777 7777', email: 'example@gmail.com' },
-        { title: 'Партнёрство', address: 'Примерова 6дА', phone: '+7 777 777 7777', email: 'example@gmail.com' },
-        { title: 'Компания', address: 'Примерова 6дА', phone: '+7 777 777 7777', email: 'example@gmail.com' },
-        { title: 'Продукты', address: 'Примерова 6дА', phone: '+7 777 777 7777', email: 'example@gmail.com' },
-        { title: 'Дополнительно', address: 'Примерова 6дА', phone: '+7 777 777 7777', email: 'example@gmail.com' },
     ];
 
     return (
