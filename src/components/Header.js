@@ -33,13 +33,49 @@ export default function Header() {
                     </div>
                 </Link>
 
-                {/* Навигация */}
                 <ul className="hidden md:flex gap-8 text-white font-medium">
-                    <li><a href="#products">Продукты</a></li>
-                    <li><Link href="#sustainability">Устойчивость</Link></li>
-                    <li><Link href="/about">О нас</Link></li>
-                    <li><Link href="/ai">QUNAR.AI</Link></li>
+                    <li>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const el = document.getElementById('products');
+                                if (el) {
+                                    el.scrollIntoView({ behavior: 'smooth' });
+                                    setTimeout(() => router.replace('/', undefined, { scroll: false }), 1000);
+                                }
+                            }}
+                            className="bg-transparent text-white"
+                        >
+                            Продукты
+                        </button>
+
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => {
+                                const el = document.getElementById('sustainability');
+                                if (el) {
+                                    el.scrollIntoView({ behavior: 'smooth' });
+                                    setTimeout(() => router.replace('/', undefined, {scroll:false}), 1000);
+                                }
+                            }}
+                            className="bg-transparent text-white"
+                        >
+                            Устойчивость
+                        </button>
+                    </li>
+                    <li>
+                        <Link href="/about" className="text-white">
+                            О нас
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/ai" className="text-white">
+                            QUNAR.AI
+                        </Link>
+                    </li>
                 </ul>
+
 
                 {/* Поиск + Иконки */}
                 <div className="flex items-center gap-6">

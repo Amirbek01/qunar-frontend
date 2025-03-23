@@ -8,6 +8,7 @@ import FaqSection from '@/components/FaqSection';
 import AboutSection from '@/components/AboutSection';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
 
@@ -18,23 +19,30 @@ export default function Home() {
       </Head>
       <Header />
       <main>
-        <section
-          className="h-screen bg-cover bg-center flex flex-col justify-center items-center"
-          style={{ backgroundImage: "url('/hero-bg.png')" }}
-        >
-          <h1 className="text-white text-5xl font-bold mb-4">
-            Представляем вам <span className="text-green-400" style={{ fontFamily: 'Josefin Sans, sans-serif' }}>QUNAR</span>
-          </h1>
-          <p className="text-white text-lg mb-8">
-            Спаситель ваших грядок и вашего сада
-          </p>
-          <Link href="/ai">
-            <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-500 transition">
-              ПОПРОБОВАТЬ
-            </button>
-          </Link>
 
+        <section className="relative w-full h-screen">
+          <Image
+            src="/hero-bg.png"
+            alt="Hero background"
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
+          <div className="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-5">
+            <h1 className="text-white text-5xl font-bold mb-4">
+              Представляем вам <span className="text-green-400" style={{ fontFamily: 'Josefin Sans, sans-serif' }}>QUNAR</span>
+            </h1>
+            <p className="text-white text-lg mb-8">
+              Спаситель ваших грядок и вашего сада
+            </p>
+            <Link href="/ai">
+              <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-500 transition">
+                ПОПРОБОВАТЬ
+              </button>
+            </Link>
+          </div>
         </section>
+
 
         {/* 🔥 Новый блок "Особенности" */}
         <Features />
@@ -44,13 +52,15 @@ export default function Home() {
 
         <Sustainability />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-0">
+
+        <FaqSection />
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-0">
           <FaqSection />
           <AboutSection />
-        </div>
+        </div> */}
         <Footer />
 
-      </main>
+      </main >
     </>
   );
 }

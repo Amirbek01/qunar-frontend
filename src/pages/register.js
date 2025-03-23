@@ -7,6 +7,8 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [fullName, setFullName] = useState('');
+
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
@@ -27,7 +29,7 @@ export default function Register() {
             const response = await fetch('http://localhost:5000/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email, password, fullName }),
             });
 
             if (!response.ok) {
@@ -52,6 +54,14 @@ export default function Register() {
                 {error && <p className="text-red-500">{error}</p>}
 
                 <form onSubmit={handleRegister} className="flex flex-col gap-4 mt-4">
+                    <input
+                        type="text"
+                        placeholder="ФИО"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="p-3 rounded bg-white w-full"
+                        required
+                    />
                     <input
                         type="email"
                         placeholder="Почта"

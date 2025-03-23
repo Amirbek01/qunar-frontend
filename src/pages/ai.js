@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 
 export default function AIChat() {
     const [messages, setMessages] = useState([]);  // Список сообщений
     const [input, setInput] = useState("");        // Текстовое поле
     const [loading, setLoading] = useState(false); // Индикатор загрузки
     const [showIntro, setShowIntro] = useState(true); // Показывать ли интро
-    
+
     const chatContainerRef = useRef(null);
 
     // Скрыть интро, когда появляются сообщения
@@ -29,14 +30,14 @@ export default function AIChat() {
             console.log("Пользователь не ввел текст.");
             return;
         }
-        
+
         console.log("Отправка сообщения:", input);
         setLoading(true);
-    
+
         // Добавляем сообщение пользователя в список
         const userMessage = { role: "user", text: input };
         setMessages((prev) => [...prev, userMessage]);
-        
+
         try {
             console.log("Отправка запроса на сервер...");
             const response = await fetch("/api/generate", {
@@ -46,17 +47,17 @@ export default function AIChat() {
                 },
                 body: JSON.stringify({ prompt: input }),
             });
-    
+
             console.log("Ответ от сервера получен:", response);
-    
+
             if (!response.ok) {
                 console.error("Ошибка в ответе от сервера:", response.statusText);
                 throw new Error(`HTTP ошибка! Статус: ${response.status}`);
             }
-    
+
             const data = await response.json();
             console.log("Данные из ответа:", data);
-    
+
             if (data && data.response) {
                 const aiMessage = { role: "ai", text: data.response };
                 setMessages((prev) => [...prev, aiMessage]);
@@ -70,7 +71,7 @@ export default function AIChat() {
             const errorMessage = { role: "ai", text: "Извините, не удалось отправить запрос. Проверьте подключение." };
             setMessages((prev) => [...prev, errorMessage]);
         }
-    
+
         setInput("");
         setLoading(false);
     };
@@ -84,16 +85,16 @@ export default function AIChat() {
                 <ReactMarkdown
                     className="markdown-content text-gray-800"
                     components={{
-                        h1: ({node, ...props}) => <h1 className="text-xl font-bold my-2" {...props} />,
-                        h2: ({node, ...props}) => <h2 className="text-lg font-bold my-2" {...props} />,
-                        h3: ({node, ...props}) => <h3 className="text-md font-bold my-1" {...props} />,
-                        p: ({node, ...props}) => <p className="my-1" {...props} />,
-                        ul: ({node, ...props}) => <ul className="list-disc pl-5 my-2" {...props} />,
-                        ol: ({node, ...props}) => <ol className="list-decimal pl-5 my-2" {...props} />,
-                        li: ({node, ...props}) => <li className="my-1" {...props} />,
-                        a: ({node, ...props}) => <a className="text-blue-600 hover:underline" {...props} target="_blank" rel="noopener noreferrer" />,
-                        code: ({node, inline, ...props}) => 
-                            inline 
+                        h1: ({ node, ...props }) => <h1 className="text-xl font-bold my-2" {...props} />,
+                        h2: ({ node, ...props }) => <h2 className="text-lg font-bold my-2" {...props} />,
+                        h3: ({ node, ...props }) => <h3 className="text-md font-bold my-1" {...props} />,
+                        p: ({ node, ...props }) => <p className="my-1" {...props} />,
+                        ul: ({ node, ...props }) => <ul className="list-disc pl-5 my-2" {...props} />,
+                        ol: ({ node, ...props }) => <ol className="list-decimal pl-5 my-2" {...props} />,
+                        li: ({ node, ...props }) => <li className="my-1" {...props} />,
+                        a: ({ node, ...props }) => <a className="text-blue-600 hover:underline" {...props} target="_blank" rel="noopener noreferrer" />,
+                        code: ({ node, inline, ...props }) =>
+                            inline
                                 ? <code className="bg-gray-100 px-1 rounded text-red-600" {...props} />
                                 : <code className="block bg-gray-100 p-2 rounded my-2 overflow-x-auto text-sm" {...props} />
                     }}
@@ -125,10 +126,12 @@ export default function AIChat() {
                     {/* Иконки */}
                     <div className="flex gap-4">
                         <Link href="/busket">
-                            🛒
+                            <FaShoppingCart className="text-white text-2xl cursor-pointer hover:text-green-400" />
+
                         </Link>
-                        <Link href="/profile">
-                            👤
+                        <Link href="/login">
+                            <FaUserCircle className="text-white text-2xl hover:text-red-400" />
+
                         </Link>
                     </div>
                 </div>
@@ -145,7 +148,7 @@ export default function AIChat() {
                 )}
 
                 {/* Окно сообщений */}
-                <div 
+                <div
                     ref={chatContainerRef}
                     className="flex-grow w-full max-w-5xl mx-auto bg-gray-100 rounded-lg shadow-md overflow-y-auto p-4 scrollbar-hidden group"
                 >
@@ -155,9 +158,8 @@ export default function AIChat() {
                         messages.map((msg, index) => (
                             <div
                                 key={index}
-                                className={`mb-3 p-3 rounded-lg ${
-                                    msg.role === "user" ? "bg-green-500 text-white self-end" : "bg-gray-200"
-                                }`}
+                                className={`mb-3 p-3 rounded-lg ${msg.role === "user" ? "bg-green-500 text-white self-end" : "bg-gray-200"
+                                    }`}
                             >
                                 {renderMessage(msg)}
                             </div>
@@ -185,5 +187,6 @@ export default function AIChat() {
                 </div>
             </section>
         </>
+
     );
 }
