@@ -1,6 +1,6 @@
 export default function Footer() {
     const footerData = [
-        { title: 'Контакты', address: 'Примерова 6дА', phone: '+7 777 777 7777', email: 'example@gmail.com' },
+        { title: 'Контакты', address: 'Манаса 34/1', phone: '+7', email: 'Margulanb71@gmail.com' },
     ];
 
     return (

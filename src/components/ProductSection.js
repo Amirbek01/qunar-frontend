@@ -3,7 +3,7 @@ import { useBusketStore } from '../store/useBusketStore';
 import Link from 'next/link';
 
 export default function ProductSection() {
-    const { addToBusket } = useBusketStore(); // ✅ Получаем функцию из Zustand store
+    const { addToBusket } = useBusketStore();
 
     const products = [
         {
@@ -34,7 +34,6 @@ export default function ProductSection() {
             <div className="max-w-7xl mx-auto px-6">
                 <h2 className="text-3xl font-bold text-center mb-12">Ассортимент</h2>
 
-                {/* Карточки товаров */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                     {products.map((product) => (
                         <div
@@ -61,8 +60,18 @@ export default function ProductSection() {
                     ))}
                 </div>
 
-                {/* Кнопка для перехода в корзину */}
+                {/* Блок для оптовых покупателей */}
                 <div className="text-center mt-10">
+                    <p className="text-gray-700 text-lg mb-4">Оптовые покупки для больших ферм и бизнеса</p>
+                    <Link href="/wholesale">
+                        <button className="bg-green-500 text-white px-10 py-3 rounded-full text-lg hover:bg-blue-600 transition">
+                            Оптовый заказ
+                        </button>
+                    </Link>
+                </div>
+
+                {/* Кнопка для перехода в корзину */}
+                <div className="text-center mt-6">
                     <Link href="/busket">
                         <button className="bg-green-500 text-white px-10 py-3 rounded-full text-lg hover:bg-green-600 transition">
                             ПЕРЕЙТИ К КОРЗИНЕ
