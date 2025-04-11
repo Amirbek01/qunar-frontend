@@ -49,8 +49,15 @@ export default function AIChat() {
                 { role: "ai", text: "Ошибка при отправке запроса." },
             ]);
         }
-        setInput("");
+        setInput(""); // Очистка ввода сразу после отправки
         setLoading(false);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault(); // Чтобы не было новой строки
+            sendMessage();
+        }
     };
 
     const renderMessage = (msg) => {
@@ -157,13 +164,13 @@ export default function AIChat() {
                 </div>
 
                 <div className="w-full max-w-2xl flex">
-                    <input
-                        type="text"
+                    <textarea
+                        rows={1}
                         className="flex-1 px-4 py-3 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                         placeholder="Чем могу быть полезен?"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                        onKeyDown={handleKeyDown}
                     />
                     <button
                         onClick={sendMessage}

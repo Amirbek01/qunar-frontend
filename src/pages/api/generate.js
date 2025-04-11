@@ -5,13 +5,25 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Прокси запрос на сервер API
-        const response = await fetch("http://176.123.178.135:9090/generate", {
+        // Данные о продукте, которые будут отправлены
+        const productData = {
+            name: "Удобрение Qunar",
+            description: "Универсальное удобрение, подходящее для всех культур.",
+            price: 200, // Цена за 1 кг
+            packaging: ["1 кг", "3 кг", "10 кг"],
+            advantages: ["Экологичность", "Высокая урожайность", "Доступная цена"]
+        };
+
+        // Прокси запрос на сервер API с добавлением данных о продукте
+        const response = await fetch("https://vencera.tech/qunar/generate", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(req.body),
+            body: JSON.stringify({
+                ...req.body, // Добавляем все данные, переданные с клиента
+                product: productData, // Добавляем данные о продукте
+            }),
         });
 
         if (!response.ok) {

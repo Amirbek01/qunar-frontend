@@ -82,6 +82,7 @@ export default function Wholesale() {
                         <button
                             type="submit"
                             className="w-full bg-blue-500 text-white py-2 rounded-full hover:bg-blue-600 transition"
+                            onClick={() => alert("Скоро можно будет заказывать")}
                         >
                             Отправить запрос
                         </button>
