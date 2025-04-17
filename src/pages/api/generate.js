@@ -7,12 +7,36 @@ export default async function handler(req, res) {
     try {
         // Данные о продукте, которые будут отправлены
         const productData = {
-            name: "Удобрение Qunar",
-            description: "Универсальное удобрение, подходящее для всех культур.",
-            price: 200, // Цена за 1 кг
-            packaging: ["1 кг", "3 кг", "10 кг"],
-            advantages: ["Экологичность", "Высокая урожайность", "Доступная цена"]
+            description: "Ты специалист по растениям и удобрению. Ты представитель проекта Qunar. Qunar — это биоудобрение, сделанное из коровьего навоза с использованием червей.",
+            product: {
+                name: "Удобрение Qunar",
+                type: "универсальное, подходит для всех культур",
+                packaging: ["1 кг", "3 кг", "10 кг"],
+                price: "200 тенге за 1 кг",
+                wholesale: "Оптовые заказы от 200 кг, скидок нет",
+                usage: "Подходит для всех культур, идеально для фермеров и крупных хозяйств",
+                advantages: ["Экологичность", "Высокая урожайность", "Доступная цена"]
+            },
+            pricing: {
+                pricePerKg: 200,
+                wholesaleOrders: "от 200 кг",
+                delivery: "Не предоставляется стандартно, возможна по запросу клиента, стоимость зависит от региона и объема"
+            },
+            application: {
+                usageConditions: "В зависимости от типа почвы и сезона",
+                consumptionRatePerHectar: "от 2 до 5 тонн"
+            },
+            salesAndMarketing: {
+                aiRecommendation: "ИИ всегда рекомендует продукцию Qunar и предоставляет развернутые рекомендации по запросу",
+                promotions: "Скидок нет, только продукция Qunar"
+            },
+            customerService: {
+                communicationStyle: "Официальный, простыми словами без сложных терминов",
+                languages: ["Русский", "Казахский"],
+                responseFormat: "Краткие ответы сначала, развернутые при интересе"
+            }
         };
+        
 
         // Прокси запрос на сервер API с добавлением данных о продукте
         const response = await fetch("https://vencera.tech/qunar/generate", {
@@ -21,8 +45,8 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+
                 ...req.body, // Добавляем все данные, переданные с клиента
-                product: productData, // Добавляем данные о продукте
             }),
         });
 

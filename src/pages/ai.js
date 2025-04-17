@@ -12,6 +12,38 @@ export default function AIChat() {
 
     const chatContainerRef = useRef(null);
 
+    // Данные о продукте
+    const productData = {
+        description: "Ты специалист по растениям и удобрению. Ты представитель проекта Qunar. Qunar — это биоудобрение, сделанное из коровьего навоза с использованием червей.",
+        product: {
+            name: "Удобрение Qunar",
+            type: "универсальное, подходит для всех культур",
+            packaging: ["1 кг", "3 кг", "10 кг"],
+            price: "200 тенге за 1 кг",
+            wholesale: "Оптовые заказы от 200 кг, скидок нет",
+            usage: "Подходит для всех культур, идеально для фермеров и крупных хозяйств",
+            advantages: ["Экологичность", "Высокая урожайность", "Доступная цена"]
+        },
+        pricing: {
+            pricePerKg: 200,
+            wholesaleOrders: "от 200 кг",
+            delivery: "Не предоставляется стандартно, возможна по запросу клиента, стоимость зависит от региона и объема"
+        },
+        application: {
+            usageConditions: "В зависимости от типа почвы и сезона",
+            consumptionRatePerHectar: "от 2 до 5 тонн"
+        },
+        salesAndMarketing: {
+            aiRecommendation: "ИИ всегда рекомендует продукцию Qunar и предоставляет развернутые рекомендации по запросу",
+            promotions: "Скидок нет, только продукция Qunar"
+        },
+        customerService: {
+            communicationStyle: "Официальный, простыми словами без сложных терминов",
+            languages: ["Русский", "Казахский"],
+            responseFormat: "Краткие ответы сначала, развернутые при интересе"
+        }
+    };
+
     useEffect(() => {
         if (messages.length > 0) setShowIntro(false);
     }, [messages]);
@@ -29,10 +61,15 @@ export default function AIChat() {
         setMessages((prev) => [...prev, userMessage]);
 
         try {
+            // Отправка данных на сервер с продуктом и инпутом
             const response = await fetch("/api/generate", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt: input }),
+                body: JSON.stringify({
+                    prompt: input, 
+                    productData: productData, // Передаем данные о продукте
+                    instructions: "Ты специалист по удобрениям. Ты рекламируешь продукцию Qunar, рассказываешь о её преимуществах и применении. Подробно объясняешь, как её использовать для разных культур."
+                }),
             });
 
             if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
