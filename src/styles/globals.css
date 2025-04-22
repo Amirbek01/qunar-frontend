@@ -7,42 +7,7 @@ body {
   @apply bg-gray-50 text-gray-800;
   font-family: 'Inter', sans-serif;
 }
-/* Кастомный скроллбар */
-::-webkit-scrollbar {
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #f0f0f0;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #22c55e;
-  border-radius: 20px;
-}
 
-/* Скрыть скроллбар по умолчанию */
-.scrollbar-hidden::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
-
-/* Показать скроллбар при наведении */
-.group:hover .scrollbar-hidden::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.group:hover .scrollbar-hidden::-webkit-scrollbar-thumb {
-  background-color: #22c55e; /* Зеленый */
-  border-radius: 10px;
-}
-
-.group:hover .scrollbar-hidden::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
 
 
   .markdown-content pre {

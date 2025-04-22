@@ -1,132 +1,131 @@
+import React, { useState } from "react";
 import Link from "next/link";
+import { FaShoppingCart, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 
 export default function AboutUs() {
+    const teamMembers = [
+        { name: "Марглан", role: "Фаундер", img: "/images/team-founder.jpg" },
+        { name: "Айдана", role: "СEО", img: "/images/team-ctoa.jpg" },
+        { name: "Амирбек", role: "СТО", img: "/images/team-ctob.jpg" },
+        { name: "Аян", role: "Дизайнер", img: "/images/team-designer-a.jpg" },
+        { name: "Ираада", role: "Дизайнер", img: "/images/team-designer-b.jpg" },
+        { name: "Жанболат", role: "Разработчик", img: "/images/team-developer.jpg" },
+    ];
+    const itemsPerPage = 3;
+    const pageCount = Math.ceil(teamMembers.length / itemsPerPage);
+    const [page, setPage] = useState(0);
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const handlePrev = () => setPage((page - 1 + pageCount) % pageCount);
+    const handleNext = () => setPage((page + 1) % pageCount);
+    const start = page * itemsPerPage;
+    const current = teamMembers.slice(start, start + itemsPerPage);
+
     return (
-        <div className="min-h-screen bg-gradient-to-b from-green-100 to-white text-gray-800">
-            {/* Фиксированная шапка */}
-            <header className="bg-green-600 text-white py-4 fixed w-full top-0 z-10">
-                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-                    <Link href="/" legacyBehavior>
-                        <a className="text-2xl font-bold">QUNAR.AI</a>
+        <div className="flex flex-col min-h-screen bg-white">
+            {/* Header */}
+            <header className="fixed top-0 w-full bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white shadow-lg z-20">
+                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                    {/* Logo и Главная */}
+                    <Link href="/" className="flex items-center space-x-3">
+                        <img src="/QUNAR.AI.png" alt="QUNAR.AI" className="h-8 w-auto" />
+                        <span className="text-xl font-extrabold">Главная</span>
                     </Link>
-                    <nav className="hidden md:flex gap-6">
-                        <Link href="/" legacyBehavior>
-                            <a className="hover:underline">Домой</a>
+                    {/* Иконки */}
+                    <div className="hidden md:flex space-x-6 items-center">
+                        <Link href="/busket" className="hover:text-green-200 transition">
+                            <FaShoppingCart size={20} />
                         </Link>
-                        <Link href="/products" legacyBehavior>
-                            <a className="hover:underline">Продукты</a>
+                        <Link href="/login" className="hover:text-green-200 transition">
+                            <FaUserCircle size={20} />
                         </Link>
-                        <Link href="/about" legacyBehavior>
-                            <a className="hover:underline">О нас</a>
-                        </Link>
-                        <Link href="/contact" legacyBehavior>
-                            <a className="hover:underline">Контакты</a>
-                        </Link>
-                    </nav>
+                    </div>
+                    {/* Mobile menu button */}
+                    <button className="md:hidden p-2 hover:bg-green-700 rounded-full transition" onClick={() => setMenuOpen(prev => !prev)}>
+                        {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                    </button>
                 </div>
+                {/* Mobile menu */}
+                {menuOpen && (
+                    <div className="md:hidden bg-[#196F3D] bg-opacity-95 backdrop-blur-sm px-6 py-4 space-y-3">
+                        <Link href="/" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>
+                            Домой
+                        </Link>
+                        <Link href="/about" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>
+                            О нас
+                        </Link>
+                    </div>
+                )}
             </header>
 
-
-            <main className="pt-20 max-w-7xl mx-auto px-6">
-                {/* Блок "О нас" */}
-                <section className="mb-12">
-                    <h1 className="text-4xl font-bold mb-4">О нас</h1>
-                    <p className="text-lg">
-                        QUNAR.AI — инновационный проект, который развивает растения с помощью уникального удобрения и искусственного интеллекта.
-                    </p>
-                </section>
-
-                {/* Команда */}
-                <section className="mb-12">
-                    <h2 className="text-3xl font-semibold mb-4">Наша команда</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* Фаундер */}
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <img src="/images/team-founder.jpg" alt="Марглан" className="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
-                            <h3 className="text-xl font-bold text-center">Марглан</h3>
-                            <p className="text-center text-gray-600">Фаундер</p>
-                        </div>
-                        {/* СТО */}
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <img src="/images/team-ctoa.jpg" alt="Айдана" className="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
-                            <h3 className="text-xl font-bold text-center">Айдана</h3>
-                            <p className="text-center text-gray-600">СТО</p>
-                        </div>
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <img src="/images/team-ctob.jpg" alt="Амирбек" className="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
-                            <h3 className="text-xl font-bold text-center">Амирбек</h3>
-                            <p className="text-center text-gray-600">СТО</p>
-                        </div>
-                        {/* Дизайнеры */}
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <img src="/images/team-designer-a.jpg" alt="Аян" className="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
-                            <h3 className="text-xl font-bold text-center">Аян</h3>
-                            <p className="text-center text-gray-600">Дизайнер</p>
-                        </div>
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <img src="/images/team-designer-b.jpg" alt="Рада" className="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
-                            <h3 className="text-xl font-bold text-center">Рада</h3>
-                            <p className="text-center text-gray-600">Дизайнер</p>
-                        </div>
-                        {/* Разработчик */}
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <img src="/images/team-developer.jpg" alt="Жан Болат" className="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
-                            <h3 className="text-xl font-bold text-center">Жан Болат</h3>
-                            <p className="text-center text-gray-600">Разработчик</p>
-                        </div>
-                    </div>
-                </section>
-
+            {/* Main content */}
+            <main className="flex flex-col pt-32 pb-8 px-4 flex-grow max-w-7xl mx-auto">
                 {/* О проекте */}
                 <section className="mb-12">
-                    <h2 className="text-3xl font-semibold mb-4">О проекте</h2>
-                    <div className="bg-white p-6 rounded-lg shadow">
-                        <p className="mb-4">
-                            Наш проект посвящён созданию инновационного удобрения, которое помогает растениям расти и развиваться. Оно производится по уникальной технологии:
-                        </p>
-                        <ul className="list-disc list-inside mb-4">
-                            <li>
-                                Используется коровий навоз, внутрь которого помещают специального червя.
-                            </li>
-                            <li>
-                                Через 5 месяцев процесс превращает навоз в высококачественное удобрение.
-                            </li>
-                            <li>
-                                На сайте внедрён искусственный интеллект, отвечающий на вопросы по уходу за растениями.
-                            </li>
-                        </ul>
-                        <p>
-                            Проект активно развивается, достигаются новые этапы, внедряются инновации для улучшения агротехнологий.
-                        </p>
+                    <h2 className="flex items-center text-3xl font-semibold mb-4 text-gray-800">
+                        <span className="text-green-600 text-2xl mr-2">🍃</span>О ПРОЕКТЕ
+                    </h2>
+                    <p className="text-gray-700 mb-4">
+                        Qunar — это экологичный стартап, создающий инновационные решения для садоводов и фермеров, сочетая натуральные продукты, цифровые технологии и образовательные ресурсы.
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 space-y-2">
+                        <li>Натуральные удобрения и экологичные решения для устойчивого земледелия.</li>
+                        <li>Обучение, инновации и забота об окружающей среде в одном продукте.</li>
+                        <li>Поддержка местных фермеров через партнёрские программы и модули обучения.</li>
+                    </ul>
+                </section>
+
+                {/* Наша команда */}
+                <section className="mb-12">
+                    <h2 className="text-3xl font-semibold mb-4 text-gray-800">Наша команда</h2>
+                    <div className="relative">
+                        <div className="flex justify-center gap-6">
+                            {current.map(m => (
+                                <div key={m.name} className="bg-white p-6 rounded-lg shadow text-center">
+                                    <img src={m.img} alt={m.name} className="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
+                                    <h3 className="text-xl font-bold text-gray-800">{m.name}</h3>
+                                    <p className="text-gray-600">{m.role}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <button onClick={handlePrev} className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 text-gray-800 hover:text-green-600">◀</button>
+                        <button onClick={handleNext} className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 text-gray-800 hover:text-green-600">▶</button>
+                        <div className="flex justify-center mt-4 space-x-2">
+                            {Array(pageCount).fill().map((_, i) => (
+                                <span
+                                    key={i}
+                                    onClick={() => setPage(i)}
+                                    className={`w-3 h-3 rounded-full cursor-pointer ${i === page ? 'bg-green-600' : 'bg-gray-300'}`}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </section>
 
                 {/* Партнёры */}
                 <section className="mb-12">
-                    <h2 className="text-3xl font-semibold mb-4">Партнёры и поддержка</h2>
+                    <h2 className="text-3xl font-semibold mb-4 text-gray-800">Партнёры и поддержка</h2>
                     <div className="bg-white p-6 rounded-lg shadow">
-                        <p className="mb-2">
-                            Мы состоим в организации <strong>Enactus AI2</strong> и сотрудничаем с <strong>Университетом Муид</strong>, что обеспечивает нам поддержку и возможности для дальнейшего развития.
+                        <p className="text-gray-700">
+                            Мы состоим в организации <strong>Enactus IITU</strong> и сотрудничаем с <strong>Университетом МУИТ</strong> для развития и поддержки.
                         </p>
                     </div>
                 </section>
 
                 {/* Контакты */}
-                <section className="mb-12">
-                    <h2 className="text-3xl font-semibold mb-4">Контакты</h2>
+                <section>
+                    <h2 className="text-3xl font-semibold mb-4 text-gray-800">Контакты</h2>
                     <div className="bg-white p-6 rounded-lg shadow">
-                        <p className="mb-2">
-                            Для связи используйте форму на сайте или пишите на:{" "}
-                            <a href="mailto:contact@qunar.ai" className="text-blue-500">
-                                contact@qunar.ai
-                            </a>
+                        <p className="text-gray-700 mb-2">
+                            Свяжитесь с нами: <a href="mailto:contact@qunar.ai" className="text-green-600">contact@qunar.ai</a>
                         </p>
-                        <p>Мы всегда рады вашим вопросам!</p>
+                        <p className="text-gray-700">Рады вашим вопросам и предложениям!</p>
                     </div>
                 </section>
             </main>
 
-            <footer className="bg-green-600 text-white py-4 text-center">
+            {/* Footer */}
+            <footer className="bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white py-4 text-center">
                 &copy; {new Date().getFullYear()} QUNAR.AI. Все права защищены.
             </footer>
         </div>

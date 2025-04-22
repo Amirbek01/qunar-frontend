@@ -22,7 +22,7 @@ export default function Features() {
                     </div>
                     <div className="md:w-1/2 flex justify-center">
                         <Image
-                            src="/ai-feature.png"
+                            src="/hhhhh.png"/* Замените на свой путь к изображению */
                             alt="AI Feature"
                             width={350}
                             height={300}

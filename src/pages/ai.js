@@ -1,222 +1,173 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from 'next/router'
 import ReactMarkdown from "react-markdown";
-import { FaShoppingCart, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaUserCircle,
+  FaBars,
+  FaTimes,
+  FaPaperPlane,
+  FaCamera,
+} from "react-icons/fa";
 
 export default function AIChat() {
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [showIntro, setShowIntro] = useState(true);
-    const [menuOpen, setMenuOpen] = useState(false); // для гамбургера
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const chatRef = useRef(null);
 
-    const chatContainerRef = useRef(null);
 
-    // Данные о продукте
-    const productData = {
-        description: "Ты специалист по растениям и удобрению. Ты представитель проекта Qunar. Qunar — это биоудобрение, сделанное из коровьего навоза с использованием червей.",
-        product: {
-            name: "Удобрение Qunar",
-            type: "универсальное, подходит для всех культур",
-            packaging: ["1 кг", "3 кг", "10 кг"],
-            price: "200 тенге за 1 кг",
-            wholesale: "Оптовые заказы от 200 кг, скидок нет",
-            usage: "Подходит для всех культур, идеально для фермеров и крупных хозяйств",
-            advantages: ["Экологичность", "Высокая урожайность", "Доступная цена"]
-        },
-        pricing: {
-            pricePerKg: 200,
-            wholesaleOrders: "от 200 кг",
-            delivery: "Не предоставляется стандартно, возможна по запросу клиента, стоимость зависит от региона и объема"
-        },
-        application: {
-            usageConditions: "В зависимости от типа почвы и сезона",
-            consumptionRatePerHectar: "от 2 до 5 тонн"
-        },
-        salesAndMarketing: {
-            aiRecommendation: "ИИ всегда рекомендует продукцию Qunar и предоставляет развернутые рекомендации по запросу",
-            promotions: "Скидок нет, только продукция Qunar"
-        },
-        customerService: {
-            communicationStyle: "Официальный, простыми словами без сложных терминов",
-            languages: ["Русский", "Казахский"],
-            responseFormat: "Краткие ответы сначала, развернутые при интересе"
-        }
-    };
+  const navItems = [
+    { href: "/", label: "Домой" },
+  ];
 
-    useEffect(() => {
-        if (messages.length > 0) setShowIntro(false);
-    }, [messages]);
+  useEffect(() => {
+    if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    if (messages.length) setShowIntro(false);
+  }, [messages]);
 
-    useEffect(() => {
-        if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
-    }, [messages]);
 
-    const sendMessage = async () => {
-        if (!input.trim()) return;
-        setLoading(true);
-        const userMessage = { role: "user", text: input };
-        setMessages((prev) => [...prev, userMessage]);
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    setLoading(true);
+    setMessages(prev => [...prev, { role: 'user', text: input }]);
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: input }),
+      });
+      const data = await res.json();
+      setMessages(prev => [...prev, { role: 'ai', text: data.response || 'Ошибка в ответе.' }]);
+    } catch {
+      setMessages(prev => [...prev, { role: 'ai', text: 'Ошибка при отправке запроса.' }]);
+    }
+    setInput('');
+    setLoading(false);
+  };
 
-        try {
-            // Отправка данных на сервер с продуктом и инпутом
-            const response = await fetch("/api/generate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    prompt: input, 
-                    productData: productData, // Передаем данные о продукте
-                    instructions: "Ты специалист по удобрениям. Ты рекламируешь продукцию Qunar, рассказываешь о её преимуществах и применении. Подробно объясняешь, как её использовать для разных культур."
-                }),
-            });
+  const onKeyDown = e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
 
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-
-            const data = await response.json();
-            const aiMessage = data?.response
-                ? { role: "ai", text: data.response }
-                : { role: "ai", text: "Ошибка в ответе сервера." };
-            setMessages((prev) => [...prev, aiMessage]);
-        } catch (error) {
-            console.error(error);
-            setMessages((prev) => [
-                ...prev,
-                { role: "ai", text: "Ошибка при отправке запроса." },
-            ]);
-        }
-        setInput(""); // Очистка ввода сразу после отправки
-        setLoading(false);
-    };
-
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault(); // Чтобы не было новой строки
-            sendMessage();
-        }
-    };
-
-    const renderMessage = (msg) => {
-        if (msg.role === "user") {
-            return <div className="text-white">{msg.text}</div>;
-        }
-        return (
-            <div className="markdown-content text-gray-800">
-                <ReactMarkdown
-                    components={{
-                        h1: ({ node, ...props }) => <h1 className="text-xl font-bold my-2" {...props} />,
-                        h2: ({ node, ...props }) => <h2 className="text-lg font-bold my-2" {...props} />,
-                        p: ({ node, ...props }) => <p className="my-1" {...props} />,
-                        code: ({ node, inline, ...props }) =>
-                            inline ? (
-                                <code className="bg-gray-100 px-1 rounded text-red-600" {...props} />
-                            ) : (
-                                <code className="block bg-gray-100 p-2 rounded my-2 overflow-x-auto text-sm" {...props} />
-                            ),
-                    }}
-                >
-                    {msg.text}
-                </ReactMarkdown>
-            </div>
-        );
-    };
+  const renderMsg = msg => {
+    const bubbleClasses =
+      msg.role === 'user'
+        ? 'self-end bg-gradient-to-r from-[#52AA5C] to-[#3F8C4A] text-white rounded-xl rounded-br-none shadow-lg'
+        : 'self-start bg-white text-[#444444] rounded-xl rounded-bl-none shadow';
+    const tailClasses =
+      msg.role === 'user'
+        ? 'right-0 translate-x-1/2 rounded-tl-lg'
+        : 'left-0 -translate-x-1/2 rounded-tr-lg';
 
     return (
-        <div className="min-h-screen flex flex-col bg-gradient-to-b from-green-100 to-white">
-            {/* Шапка */}
-            <header className="bg-green-600 text-white py-4 fixed w-full top-0 z-10">
-                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-                    <Link href="/">
-                        <span className="text-2xl font-bold cursor-pointer">QUNAR.AI</span>
-                    </Link>
-                    <nav className="hidden md:flex gap-6">
-                        <Link href="/">Домой</Link>
-                        <Link href="/products">Продукты</Link>
-                        <Link href="/sustainability">Устойчивость</Link>
-                        <Link href="/about">О нас</Link>
-                    </nav>
-                    <div className="hidden md:flex gap-4">
-                        <Link href="/busket">
-                            <FaShoppingCart className="text-2xl cursor-pointer hover:text-green-200" />
-                        </Link>
-                        <Link href="/login">
-                            <FaUserCircle className="text-2xl hover:text-green-200" />
-                        </Link>
-                    </div>
-                    {/* Гамбургер для мобильных */}
-                    <button
-                        className="md:hidden text-2xl"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                    >
-                        {menuOpen ? <FaTimes /> : <FaBars />}
-                    </button>
-                </div>
-                {/* Мобильное меню */}
-                {menuOpen && (
-                    <div className="md:hidden bg-green-700 px-6 py-4">
-                        <Link href="/" className="block py-1" onClick={() => setMenuOpen(false)}>Домой</Link>
-                        <Link href="/products" className="block py-1" onClick={() => setMenuOpen(false)}>Продукты</Link>
-                        <Link href="/sustainability" className="block py-1" onClick={() => setMenuOpen(false)}>Устойчивость</Link>
-                        <Link href="/about" className="block py-1" onClick={() => setMenuOpen(false)}>О нас</Link>
-                        <div className="flex gap-4 pt-2">
-                            <Link href="/busket" onClick={() => setMenuOpen(false)}>
-                                <FaShoppingCart className="text-2xl hover:text-green-200" />
-                            </Link>
-                            <Link href="/login" onClick={() => setMenuOpen(false)}>
-                                <FaUserCircle className="text-2xl hover:text-green-200" />
-                            </Link>
-                        </div>
-                    </div>
-                )}
-            </header>
-
-            {/* Основной блок (чат) */}
-            <section className="flex-grow pt-20 flex flex-col items-center px-4">
-                {showIntro && (
-                    <div className="text-center my-6">
-                        <h1 className="text-gray-600 text-lg">Это начало вашей консультации с</h1>
-                        <h2 className="text-gray-800 text-2xl font-semibold">QUNAR.AI</h2>
-                    </div>
-                )}
-
-                <div
-                    ref={chatContainerRef}
-                    className="w-full max-w-2xl flex-grow bg-white rounded-lg shadow-md p-4 mb-4 overflow-y-auto"
-                >
-                    {messages.length === 0 ? (
-                        <p className="text-gray-400 text-center">Здесь появятся ваши сообщения...</p>
-                    ) : (
-                        messages.map((msg, index) => (
-                            <div
-                                key={index}
-                                className={`mb-3 p-3 rounded-lg ${msg.role === "user" ? "bg-green-500 text-white ml-auto w-fit" : "bg-gray-200 mr-auto w-fit"
-                                    }`}
-                            >
-                                {renderMessage(msg)}
-                            </div>
-                        ))
-                    )}
-                    {loading && <p className="text-gray-400 text-center">ИИ печатает...</p>}
-                </div>
-
-                <div className="w-full max-w-2xl flex">
-                    <textarea
-                        rows={1}
-                        className="flex-1 px-4 py-3 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                        placeholder="Чем могу быть полезен?"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                    />
-                    <button
-                        onClick={sendMessage}
-                        className="px-6 py-3 rounded-r-lg bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-700"
-                    >
-                        ▶️
-                    </button>
-                </div>
-            </section>
-        </div>
+      <div className={`max-w-[70%] px-4 py-3 mb-4 relative break-words ${bubbleClasses}`}>
+        <ReactMarkdown components={{ p: ({ children }) => <p className="my-0">{children}</p> }}>
+          {msg.text}
+        </ReactMarkdown>
+        <span className={`absolute w-3 h-3 bg-inherit bottom-0 ${tailClasses}`} />
+      </div>
     );
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-white">
+      <header className="fixed top-0 w-full bg-gradient-to-r from-[#344C11] to-[#1B4332] bg-opacity-90 backdrop-blur-sm text-white shadow-xl border-b border-[#1A2902] z-20">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+          <div className="hidden md:flex space-x-10 font-medium">
+            {navItems.map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="hover:text-green-300 transition transform hover:scale-105"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+          <Link href="/" className="text-2xl font-extrabold tracking-wide hover:text-green-200 transition">
+            QUNAR.AI
+          </Link>
+          <div className="hidden md:flex space-x-6 items-center">
+            <Link href="/busket" className="hover:text-green-300 transition transform hover:scale-110">
+              <FaShoppingCart size={22} />
+            </Link>
+            <Link href="/login" className="hover:text-green-300 transition transform hover:scale-110">
+              <FaUserCircle size={22} />
+            </Link>
+          </div>
+          <button className="md:hidden p-2 hover:bg-green-700 rounded-full transition" onClick={() => setMenuOpen(prev => !prev)}>
+            {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          </button>
+        </div>
+        {menuOpen && (
+          <div className="md:hidden bg-[#196F3D] px-6 py-4 space-y-3">
+            {navItems.map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="block text-white hover:text-green-200 transition"
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <main className="flex flex-col items-center pt-32 pb-8 px-4 flex-grow bg-white">
+        {showIntro && (
+          <div className="relative w-full max-w-2xl flex flex-col items-center mt-10">
+            <img src="/QUNAR.AI.png" alt="QUNAR.AI" className="w-48 opacity-20" />
+            <h1 className="text-lg text-[#444444] mt-4">Это начало вашей консультации с</h1>
+            <h2 className="text-2xl font-bold text-[#52AA5C]">QUNAR.AI</h2>
+          </div>
+        )}
+
+        {messages.length > 0 && (
+          <div
+            ref={chatRef}
+            className="flex flex-col w-full max-w-2xl bg-white rounded-2xl p-6 mt-6 flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-[#52AA5C] scrollbar-track-white"
+          >
+            {messages.map((m, i) => (
+              <div
+                key={i}
+                className="flex"
+                style={{ flexDirection: m.role === 'user' ? 'row-reverse' : 'row' }}
+              >
+                {renderMsg(m)}
+              </div>
+            ))}
+            {loading && <div className="self-start text-[#AAAAAA] italic">ИИ печатает...</div>}
+          </div>
+        )}
+
+        <div className="flex w-full max-w-2xl mt-4 items-center">
+          <div className="flex items-center bg-white px-4 py-3 border border-[#DDD] rounded-full flex-1 shadow-sm">
+            <input
+              type="text"
+              className="flex-1 outline-none"
+              placeholder="Чем могу быть полезен?"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={onKeyDown}
+            />
+          </div>
+          <button
+            onClick={sendMessage}
+            className="ml-4 bg-[#52AA5C] hover:bg-[#469A54] p-3 rounded-full transition shadow-lg"
+          >
+            <FaPaperPlane className="text-white" />
+          </button>
+        </div>
+      </main>
+    </div>
+  );
 }
