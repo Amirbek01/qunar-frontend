@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa';
+import { FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 
 export default function Header() {
@@ -9,15 +9,14 @@ export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        // Проверяем наличие токена в localStorage (если он есть, пользователь залогинен)
         const token = localStorage.getItem('token');
         setIsLoggedIn(!!token);
     }, []);
 
     function handleLogout() {
-        localStorage.removeItem('token'); // Удаляем токен
+        localStorage.removeItem('token');
         setIsLoggedIn(false);
-        router.push('/login'); // Перенаправляем на страницу входа
+        router.push('/login');
     }
 
     return (
@@ -48,7 +47,6 @@ export default function Header() {
                         >
                             Продукты
                         </button>
-
                     </li>
                     <li>
                         <button
@@ -56,7 +54,7 @@ export default function Header() {
                                 const el = document.getElementById('sustainability');
                                 if (el) {
                                     el.scrollIntoView({ behavior: 'smooth' });
-                                    setTimeout(() => router.replace('/', undefined, {scroll:false}), 1000);
+                                    setTimeout(() => router.replace('/', undefined, { scroll: false }), 1000);
                                 }
                             }}
                             className="bg-transparent text-white"
@@ -76,25 +74,29 @@ export default function Header() {
                     </li>
                 </ul>
 
-
                 {/* Поиск + Иконки */}
                 <div className="flex items-center gap-6">
-
-
                     <Link href="/busket">
                         <FaShoppingCart className="text-white text-2xl cursor-pointer hover:text-green-400" />
                     </Link>
 
                     {isLoggedIn ? (
-                        <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogout}>
-                            <FaUserCircle className="text-white text-2xl hover:text-red-400" />
-                            <span className="text-white hidden md:block">Выйти</span>
-                        </div>
-                    ) : (
-                        <Link href="/login">
-                            <FaUserCircle className="text-white text-2xl cursor-pointer hover:text-green-400" />
+                        <Link href="/account" className="flex items-center gap-2">
+                            <FaUserCircle className="text-white text-2xl hover:text-green-400" />
+                            <span className="text-white hidden md:block">Профиль</span>
                         </Link>
+                    ) : (
+                        <>
+                            <Link href="/login" className="flex items-center gap-1">
+                                <FaUserCircle className="text-white text-2xl cursor-pointer hover:text-green-400" />
+                                <span className="text-white hidden md:block">Вход</span>
+                            </Link>
+                            <Link href="/register" className="text-white underline hidden md:block">
+                                Регистрация
+                            </Link>
+                        </>
                     )}
+
                 </div>
             </nav>
         </header>

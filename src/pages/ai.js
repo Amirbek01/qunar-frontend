@@ -78,49 +78,40 @@ export default function AIChat() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <header className="fixed top-0 w-full bg-gradient-to-r from-[#344C11] to-[#1B4332] bg-opacity-90 backdrop-blur-sm text-white shadow-xl border-b border-[#1A2902] z-20">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="hidden md:flex space-x-10 font-medium">
-            {navItems.map(item => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="hover:text-green-300 transition transform hover:scale-105"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-          <Link href="/" className="text-2xl font-extrabold tracking-wide hover:text-green-200 transition">
-            QUNAR.AI
-          </Link>
-          <div className="hidden md:flex space-x-6 items-center">
-            <Link href="/busket" className="hover:text-green-300 transition transform hover:scale-110">
-              <FaShoppingCart size={22} />
-            </Link>
-            <Link href="/login" className="hover:text-green-300 transition transform hover:scale-110">
-              <FaUserCircle size={22} />
-            </Link>
-          </div>
-          <button className="md:hidden p-2 hover:bg-green-700 rounded-full transition" onClick={() => setMenuOpen(prev => !prev)}>
-            {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-          </button>
-        </div>
-        {menuOpen && (
-          <div className="md:hidden bg-[#196F3D] px-6 py-4 space-y-3">
-            {navItems.map(item => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block text-white hover:text-green-200 transition"
-                onClick={() => setMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        )}
-      </header>
+      <header className="fixed top-0 w-full bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white shadow-lg z-20">
+                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                    <Link href="/" className="flex items-center gap-2">
+                        <img src="/qunar-logo-circle.png" alt="QUNAR.AI" className="h-10 w-auto" />
+                        <span className="text-2xl font-extrabold">QUNAR</span>
+                    </Link>
+                    <nav className="hidden md:flex gap-8 font-semibold">
+                        <Link href="/" className="hover:text-green-300 transition">Главная</Link>
+                        <Link href="/product" className="hover:text-green-300 transition">Qunar Маркет</Link>
+                        <Link href="/about" className="hover:text-green-300 transition">О нас</Link>
+                    </nav>
+                    <div className="hidden md:flex items-center gap-6">
+                        <Link href="/busket" className="hover:text-green-300 transition">
+                            <FaShoppingCart size={24} />
+                        </Link>
+                        <Link href="/account" className="hover:text-green-300 transition">
+                            <FaUserCircle size={24} />
+                        </Link>
+                    </div>
+                    <button className="md:hidden p-2 hover:bg-green-700 rounded-full transition" onClick={() => setMenuOpen(prev => !prev)}>
+                        {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                    </button>
+                </div>
+                {menuOpen && (
+                    <div className="md:hidden bg-[#196F3D] bg-opacity-95 backdrop-blur-sm px-6 py-4 space-y-3">
+                        <Link href="/" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Главная</Link>
+                        <Link href="/product" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Маркетплейс</Link>
+                        <Link href="/about" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>О нас</Link>
+                        <Link href="/subscriptions" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Подписка</Link>
+                        <Link href="/busket" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Корзина</Link>
+                        <Link href="/account" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Аккаунт</Link>
+                    </div>
+                )}
+            </header>
 
       <main className="flex flex-col items-center pt-32 pb-8 px-4 flex-grow bg-white">
         {showIntro && (

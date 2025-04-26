@@ -24,4 +24,7 @@ export const useBusketStore = create((set) => ({
     removeFromBusket: (id) => set((state) => ({
         busket: state.busket.filter(item => item.id !== id)
     })),
+
+    // ✅ ДОБАВЛЯЕМ функцию очистки корзины:
+    clearBusket: () => set({ busket: [] }),
 }));
