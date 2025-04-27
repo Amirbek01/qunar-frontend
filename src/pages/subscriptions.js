@@ -20,7 +20,7 @@ export default function SubscriptionsPage() {
             return;
         }
 
-        fetch('http://localhost:3000/subscriptions', {
+        fetch('http://176.123.178.135:6063/subscriptions', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -38,7 +38,7 @@ export default function SubscriptionsPage() {
         setError('');
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:3000/subscriptions/upgrade', {
+            const res = await fetch('http://176.123.178.135:6063/subscriptions/upgrade', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

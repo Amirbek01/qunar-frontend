@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc0NTYwMDQzNSwiZXhwIjoxNzQ1NjA0MDM1fQ.nJ4UfC9ouEuogYmQk44Ifwek559NqExx0p1h"
-URL="http://localhost:3000/products/add"
+URL="http://176.123.178.135:6063/products/add"
 
 echo "🚀 Заливаю товары в маркетплейс..."
 
@@ -10,7 +10,7 @@ curl -X POST $URL -H "Authorization: Bearer $TOKEN" -H "Content-Type: applicatio
 curl -X POST $URL -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"category_id":1,"name":"Датчик влажности DHT22","description":"Комбинированный датчик влажности и температуры.","price":1700,"image_url":"https://via.placeholder.com/150","metadata":{"range":"0-100%","accuracy":"±2%","interface":"Digital"}}'
 curl -X POST $URL -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"category_id":1,"name":"Барометр BMP280","description":"Датчик давления и температуры.","price":2100,"image_url":"https://via.placeholder.com/150","metadata":{"range":"300-1100hPa","accuracy":"±1hPa","interface":"I2C/SPI"}}'
 curl -X POST $URL -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"category_id":1,"name":"Датчик CO2 MH-Z19B","description":"Датчик углекислого газа.","price":5800,"image_url":"https://via.placeholder.com/150","metadata":{"range":"0-5000ppm","accuracy":"±50ppm","interface":"UART"}}'
-curl -X POST $URL -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"category_id":1,"name":"Пылевой датчик GP2Y1010AU0F","description":"Датчик качества воздуха.","price":3000,"image_url":"https://via.placeholder.com/150","metadata":{"range":"0-500µg/m³","accuracy":"±10%","interface":"Analog"}}'
+curl -X POST $URL -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"category_id":1,"name":"Пылевой датчик GP2Y1010AU0F","description":"Датчик качества воздуха.","price":6063,"image_url":"https://via.placeholder.com/150","metadata":{"range":"0-500µg/m³","accuracy":"±10%","interface":"Analog"}}'
 
 # ОСВЕЩЕНИЕ
 curl -X POST $URL -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"category_id":2,"name":"Фитолампа 60W","description":"Фитолампа для растений.","price":5000,"image_url":"https://via.placeholder.com/150","metadata":{"power":"60W","spectrum":"380–800nm","dimensions":"20x20см"}}'

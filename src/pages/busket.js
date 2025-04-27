@@ -32,7 +32,7 @@ export default function Busket() {
         try {
             await Promise.all(
                 busket.map(product =>
-                    fetch('http://localhost:3000/cart/add', {
+                    fetch('http://176.123.178.135:6063/cart/add', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export default function Busket() {
         setSuccessMessage('');
 
         try {
-            const res = await fetch('http://localhost:3000/orders', {
+            const res = await fetch('http://176.123.178.135:6063/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
