@@ -39,7 +39,7 @@ export default function Register() {
         setLoading(true)
 
         try {
-            const res = await fetch('http://176.123.178.135:6063/auth/register', {
+            const res = await fetch('https://vencera.tech/qunarBack/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

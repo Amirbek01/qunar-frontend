@@ -38,7 +38,7 @@ export default function ProductPage() {
 
     const fetchCategories = async () => {
         try {
-            const res = await fetch('http://176.123.178.135:6063/categories');
+            const res = await fetch('https://vencera.tech/qunarBack/categories');
             const data = await res.json();
             setCategories(data);
         } catch (error) {
@@ -55,7 +55,7 @@ export default function ProductPage() {
                 page,
                 limit,
             });
-            const res = await fetch(`http://176.123.178.135:6063/products?${params.toString()}`);
+            const res = await fetch(`https://vencera.tech/qunarBack/products?${params.toString()}`);
             const data = await res.json();
             setProducts(data);
             setTotalPages(1);

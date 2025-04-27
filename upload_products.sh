@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc0NTYwMDQzNSwiZXhwIjoxNzQ1NjA0MDM1fQ.nJ4UfC9ouEuogYmQk44Ifwek559NqExx0p1h"
-URL="http://176.123.178.135:6063/products/add"
+URL="https://vencera.tech/qunarBack/products/add"
 
 echo "🚀 Заливаю товары в маркетплейс..."
 

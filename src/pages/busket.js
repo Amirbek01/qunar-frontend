@@ -32,7 +32,7 @@ export default function Busket() {
         try {
             await Promise.all(
                 busket.map(product =>
-                    fetch('http://176.123.178.135:6063/cart/add', {
+                    fetch('https://vencera.tech/qunarBack/cart/add', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export default function Busket() {
         setSuccessMessage('');
 
         try {
-            const res = await fetch('http://176.123.178.135:6063/orders', {
+            const res = await fetch('https://vencera.tech/qunarBack/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

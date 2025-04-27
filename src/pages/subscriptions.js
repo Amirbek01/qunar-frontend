@@ -20,7 +20,7 @@ export default function SubscriptionsPage() {
             return;
         }
 
-        fetch('http://176.123.178.135:6063/subscriptions', {
+        fetch('https://vencera.tech/qunarBack/subscriptions', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -38,7 +38,7 @@ export default function SubscriptionsPage() {
         setError('');
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://176.123.178.135:6063/subscriptions/upgrade', {
+            const res = await fetch('https://vencera.tech/qunarBack/subscriptions/upgrade', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

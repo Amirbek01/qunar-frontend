@@ -14,11 +14,11 @@ pnpm dev
 bun dev
 ```
 
-Open [http://176.123.178.135:6063](http://176.123.178.135:6063) with your browser to see the result.
+Open [https://vencera.tech/qunarBack](https://vencera.tech/qunarBack) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://176.123.178.135:6063/api/hello](http://176.123.178.135:6063/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [https://vencera.tech/qunarBack/api/hello](https://vencera.tech/qunarBack/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
 
