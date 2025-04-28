@@ -27,12 +27,9 @@ export default function Account() {
         router.push('/login');
     };
 
-    const isActive = (path) => router.pathname === path;
-
     return (
-        <div className="flex flex-col min-h-screen bg-gradient-to-b from-green-50 to-white">
-            {/* Хедер */}
-            <header className="fixed top-0 w-full bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white shadow-lg z-20">
+        <div className="flex flex-col min-h-screen bg-gray-100">
+            <header className="fixed top-0 w-full bg-green-700 text-white shadow-lg z-20">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
                         <img src="/qunar-logo-circle.png" alt="QUNAR.AI" className="h-10 w-auto" />
@@ -40,10 +37,9 @@ export default function Account() {
                     </Link>
                     <nav className="hidden md:flex gap-8 font-semibold">
                         <Link href="/" className="hover:text-green-300 transition">Главная</Link>
-                        <Link href="/product" className="hover:text-green-300 transition">Qunar Маркет</Link>
+                        <Link href="/product" className="hover:text-green-300 transition">QunarMarket</Link>
                         <Link href="/about" className="hover:text-green-300 transition">О нас</Link>
                         <Link href="/ai" className="hover:text-green-300 transition">Qunar AI</Link>
-
                     </nav>
                     <div className="hidden md:flex items-center gap-6">
                         <Link href="/busket" className="hover:text-green-300 transition">
@@ -53,59 +49,54 @@ export default function Account() {
                             <FaUserCircle size={24} />
                         </Link>
                     </div>
-                    <button className="md:hidden p-2 hover:bg-green-700 rounded-full transition" onClick={() => setMenuOpen(prev => !prev)}>
+                    <button
+                        className="md:hidden p-2 hover:bg-green-800 rounded-full transition"
+                        onClick={() => setMenuOpen(prev => !prev)}
+                    >
                         {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                     </button>
                 </div>
                 {menuOpen && (
-                    <div className="md:hidden bg-[#196F3D] bg-opacity-95 backdrop-blur-sm px-6 py-4 space-y-3">
-                        <Link href="/" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Главная</Link>
-                        <Link href="/product" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Маркетплейс</Link>
-                        <Link href="/about" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>О нас</Link>
-                        <Link href="/subscriptions" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Подписка</Link>
-                        <Link href="/busket" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Корзина</Link>
-                        <Link href="/account" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Аккаунт</Link>
+                    <div className="md:hidden bg-green-800 px-6 py-4 space-y-3">
+                        <Link href="/" onClick={() => setMenuOpen(false)} className="block text-white">Главная</Link>
+                        <Link href="/product" onClick={() => setMenuOpen(false)} className="block text-white">Маркетплейс</Link>
+                        <Link href="/about" onClick={() => setMenuOpen(false)} className="block text-white">О нас</Link>
+                        <Link href="/ai" onClick={() => setMenuOpen(false)} className="block text-white">Qunar AI</Link>
                     </div>
                 )}
             </header>
 
+            <main className="flex-1 max-w-6xl mx-auto px-4 pt-32 pb-10">
+                <div className="bg-white p-8 rounded-2xl shadow-md grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Profile Section */}
+                    <div className="flex flex-col items-center">
+                        <div className="bg-gray-300 rounded-full p-4">
+                            <FaUserCircle size={64} className="text-gray-700" />
+                        </div>
+                        <h2 className="text-2xl font-bold mt-4">{user.name || 'Name'}</h2>
+                        <p className="text-gray-500">City</p>
+                        <p className="mt-2 text-sm text-gray-400">Premium: Deactivate</p>
+                        <button
+                            onClick={handleLogout}
+                            className="mt-4 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg flex items-center gap-2"
+                        >
+                            Exit
+                        </button>
+                    </div>
+                
+                </div>
+                {/* Action Buttons Section */}
+                <div className="flex flex-col md:flex-row gap-6 mt-10 justify-center">
+                    <Link href="/subscriptions" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full text-center">
+                        💳 Подписка / QUNAR PRO
+                    </Link>
+                    <Link href="/ai" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full text-center">
+                        🦰 Чат с ИИ
+                    </Link>
+                </div>
+            </main>
 
-            <main className="flex-1 max-w-5xl mx-auto px-4 py-32">
-    <div className="bg-white p-12 rounded-2xl shadow-2xl flex flex-col items-center text-center">
-        <h2 className="text-5xl font-bold mb-4 text-gray-800">Добро пожаловать,</h2>
-        <p className="text-2xl text-gray-600 font-medium mb-10">
-            {user.name || 'пользователь'} 👋
-        </p>
-
-        <div className="flex flex-col items-center gap-6">
-            
-
-            <button
-                className="w-64 bg-green-500 hover:bg-green-600 hover:scale-105 transition-transform text-white font-semibold py-3 rounded-full"
-                onClick={() => router.push('/subscriptions')}
-            >
-                💳 Подписка / QUNAR PRO
-            </button>
-
-            <button
-                className="w-64 bg-green-500 hover:bg-green-600 hover:scale-105 transition-transform text-white font-semibold py-3 rounded-full"
-                onClick={() => router.push('/ai')}
-            >
-                🧠 Чат с ИИ
-            </button>
-
-            <button
-                className="w-64 bg-red-500 hover:bg-red-600 hover:scale-105 transition-transform text-white font-semibold py-3 rounded-full"
-                onClick={handleLogout}
-            >
-                🚪 Выйти
-            </button>
-        </div>
-    </div>
-</main>
-
-            {/* Футер */}
-            <footer className="bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white py-4 text-center">
+            <footer className="bg-green-700 text-white py-4 text-center">
                 &copy; {new Date().getFullYear()} QUNAR.AI. Все права защищены.
             </footer>
         </div>

@@ -25,7 +25,7 @@ export default function AboutUs() {
     return (
         <div className="flex flex-col min-h-screen bg-gradient-to-b from-green-50 to-white">
             {/* Header */}
-            <header className="fixed top-0 w-full bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white shadow-lg z-20">
+            <header className="fixed top-0 w-full  bg-green-700 text-white shadow-lg z-20">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
                         <img src="/qunar-logo-circle.png" alt="QUNAR.AI" className="h-10 w-auto" />
@@ -121,7 +121,7 @@ export default function AboutUs() {
             </main>
 
             {/* Footer */}
-            <footer className="bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white py-4 text-center">
+            <footer className=" bg-green-700 text-white py-4 text-center">
                 &copy; {new Date().getFullYear()} QUNAR.AI. Все права защищены.
             </footer>
         </div>

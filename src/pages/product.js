@@ -81,7 +81,7 @@ export default function ProductPage() {
     return (
         <div className="min-h-screen bg-gray-100">
             {/* Хедер */}
-            <header className="fixed top-0 w-full bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white shadow-lg z-20">
+            <header className="fixed top-0 w-full  bg-green-700 text-white shadow-lg z-20">
                 <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
                     {/* Лого */}
                     <Link href="/" className="flex items-center space-x-3">

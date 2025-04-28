@@ -22,17 +22,16 @@ export default function Busket() {
     }, []);
 
     useEffect(() => {
-        setTotalPrice(
-            busket.reduce((sum, item) => sum + item.price * item.quantity, 0)
-        );
+        setTotalPrice(busket.reduce((sum, item) => sum + item.price * item.quantity, 0));
     }, [busket]);
 
     const saveCartToBackend = async () => {
         const token = localStorage.getItem('token');
         try {
+            console.log('Saving cart to backend...');
             await Promise.all(
                 busket.map(product =>
-                    fetch('https://vencera.tech/qunarBack/cart/add', {
+                    fetch('http://localhost:6063/cart/add', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -42,9 +41,17 @@ export default function Busket() {
                             product_id: product.id,
                             quantity: product.quantity,
                         }),
+
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Ошибка сохранения товара ID ${product.id}`);
+                        }
                     })
                 )
             );
+            console.log(product.id)
+            console.log(product.quantity),
+                console.log('Cart saved successfully.');
         } catch (error) {
             console.error('Ошибка при сохранении корзины:', error);
             throw new Error('Ошибка сохранения корзины. Попробуйте позже.');
@@ -68,16 +75,18 @@ export default function Busket() {
         setSuccessMessage('');
 
         try {
-            const res = await fetch('https://vencera.tech/qunarBack/orders', {
+            console.log('Sending order...');
+            const res = await fetch('http://localhost:6063/cart/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({})
+                body: JSON.stringify({}),
             });
 
             if (res.status === 401) {
+                console.warn('Unauthorized, redirecting to login...');
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 router.push('/login');
@@ -89,12 +98,13 @@ export default function Busket() {
                 throw new Error(err.message || 'Ошибка при отправке заказа');
             }
 
+            console.log('Order submitted successfully.');
             setSuccessMessage('Спасибо за заказ! Отдел продаж свяжется с вами в ближайшее время.');
+            clearBusket();
             setTimeout(() => {
                 router.push('/');
             }, 4000);
 
-            clearBusket();
         } catch (error) {
             console.error('Ошибка при отправке заказа:', error);
             setErrorMessage(error.message || 'Ошибка при оформлении заказа.');
@@ -119,11 +129,10 @@ export default function Busket() {
             await handleOrderSubmit();
         }
     };
-
     return (
         <div className="flex flex-col min-h-screen bg-gradient-to-b from-green-50 to-white">
             {/* Хедер */}
-            <header className="fixed top-0 w-full bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white shadow-lg z-20">
+            <header className="fixed top-0 w-full  bg-green-700 text-white shadow-lg z-20">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
                         <img src="/qunar-logo-circle.png" alt="QUNAR.AI" className="h-10 w-auto" />
@@ -215,7 +224,7 @@ export default function Busket() {
             </main>
 
             {/* Футер */}
-            <footer className="bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white py-4 text-center">
+            <footer className=" bg-green-700 text-white py-4 text-center">
                 &copy; {new Date().getFullYear()} QUNAR.AI. Все права защищены.
             </footer>
         </div>

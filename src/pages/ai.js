@@ -30,24 +30,28 @@ export default function AIChat() {
   }, [messages]);
 
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-    setLoading(true);
-    setMessages(prev => [...prev, { role: 'user', text: input }]);
-    try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: input }),
-      });
-      const data = await res.json();
-      setMessages(prev => [...prev, { role: 'ai', text: data.response || 'Ошибка в ответе.' }]);
-    } catch {
-      setMessages(prev => [...prev, { role: 'ai', text: 'Ошибка при отправке запроса.' }]);
-    }
-    setInput('');
-    setLoading(false);
-  };
+const sendMessage = async () => {
+  if (!input.trim()) return;
+  
+  setMessages(prev => [...prev, { role: 'user', text: input }]);
+  setInput(''); // ОЧИЩАЕМ СРАЗУ ПОСЛЕ добавления сообщения пользователя
+  setLoading(true);
+  
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: input }),
+    });
+    const data = await res.json();
+    setMessages(prev => [...prev, { role: 'ai', text: data.response || 'Ошибка в ответе.' }]);
+  } catch {
+    setMessages(prev => [...prev, { role: 'ai', text: 'Ошибка при отправке запроса.' }]);
+  }
+  
+  setLoading(false);
+};
+
 
   const onKeyDown = e => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -75,10 +79,9 @@ export default function AIChat() {
       </div>
     );
   };
-
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <header className="fixed top-0 w-full bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white shadow-lg z-20">
+      <header className="fixed top-0 w-full  bg-green-700 text-white shadow-lg z-20">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
                         <img src="/qunar-logo-circle.png" alt="QUNAR.AI" className="h-10 w-auto" />
@@ -116,7 +119,7 @@ export default function AIChat() {
       <main className="flex flex-col items-center pt-32 pb-8 px-4 flex-grow bg-white">
         {showIntro && (
           <div className="relative w-full max-w-2xl flex flex-col items-center mt-10">
-            <img src="/QUNAR.AI.png" alt="QUNAR.AI" className="w-48 opacity-20" />
+            <img src="/qunar-logo-circle.png" alt="QUNAR.AI" className="w-48 opacity-6" />
             <h1 className="text-lg text-[#444444] mt-4">Это начало вашей консультации с</h1>
             <h2 className="text-2xl font-bold text-[#52AA5C]">QUNAR.AI</h2>
           </div>

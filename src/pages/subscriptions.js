@@ -11,8 +11,6 @@ export default function SubscriptionsPage() {
     const [error, setError] = useState('');
     const [menuOpen, setMenuOpen] = useState(false);
 
-
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -53,7 +51,7 @@ export default function SubscriptionsPage() {
             }
 
             const data = await res.json();
-            window.location.href = data.url; // переходим на Stripe Checkout
+            window.location.href = data.url;
         } catch (err) {
             setError(err.message);
         } finally {
@@ -62,9 +60,9 @@ export default function SubscriptionsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            {/* Уникальный хедер */}
-            <header className="fixed top-0 w-full bg-gradient-to-r from-[#2D6A4F] to-[#1B4332] text-white shadow-lg z-20">
+        <div className="flex flex-col min-h-screen bg-gray-100">
+            {/* Хедер */}
+            <header className="fixed top-0 w-full  bg-green-700 text-white shadow-lg z-20">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
                         <img src="/qunar-logo-circle.png" alt="QUNAR.AI" className="h-10 w-auto" />
@@ -75,7 +73,6 @@ export default function SubscriptionsPage() {
                         <Link href="/product" className="hover:text-green-300 transition">Qunar Маркет</Link>
                         <Link href="/about" className="hover:text-green-300 transition">О нас</Link>
                         <Link href="/ai" className="hover:text-green-300 transition">Qunar AI</Link>
-
                     </nav>
                     <div className="hidden md:flex items-center gap-6">
                         <Link href="/busket" className="hover:text-green-300 transition">
@@ -91,59 +88,62 @@ export default function SubscriptionsPage() {
                 </div>
                 {menuOpen && (
                     <div className="md:hidden bg-[#196F3D] bg-opacity-95 backdrop-blur-sm px-6 py-4 space-y-3">
-                        <Link href="/" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Главная</Link>
-                        <Link href="/product" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Маркетплейс</Link>
-                        <Link href="/about" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>О нас</Link>
-                        <Link href="/subscriptions" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Подписка</Link>
-                        <Link href="/busket" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Корзина</Link>
-                        <Link href="/account" className="block text-white py-2 hover:text-green-200 transition" onClick={() => setMenuOpen(false)}>Аккаунт</Link>
+                        <Link href="/" onClick={() => setMenuOpen(false)} className="block text-white py-2 hover:text-green-200 transition">Главная</Link>
+                        <Link href="/product" onClick={() => setMenuOpen(false)} className="block text-white py-2 hover:text-green-200 transition">Маркетплейс</Link>
+                        <Link href="/about" onClick={() => setMenuOpen(false)} className="block text-white py-2 hover:text-green-200 transition">О нас</Link>
+                        <Link href="/subscriptions" onClick={() => setMenuOpen(false)} className="block text-white py-2 hover:text-green-200 transition">Подписка</Link>
+                        <Link href="/busket" onClick={() => setMenuOpen(false)} className="block text-white py-2 hover:text-green-200 transition">Корзина</Link>
+                        <Link href="/account" onClick={() => setMenuOpen(false)} className="block text-white py-2 hover:text-green-200 transition">Аккаунт</Link>
                     </div>
                 )}
             </header>
 
-            <main className="max-w-3xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
-                <h2 className="text-3xl font-bold mb-4">Моя подписка</h2>
+            {/* Контент */}
+            <main className="flex flex-1 items-center justify-center px-4 pt-12">
+                <div className="w-full max-w-2xl bg-white p-10 rounded-xl shadow-lg">
+                    <h2 className="text-4xl font-bold mb-6 text-center text-gray-800">Моя подписка</h2>
 
-                {loading ? (
-                    <p>Загрузка подписки...</p>
-                ) : error ? (
-                    <p className="text-red-500">{error}</p>
-                ) : (
-                    <>
-                        <p className="text-lg mb-6">
-                            Текущий план:{" "}
-                            <span className={`font-bold ${plan === 'pro' ? 'text-green-600' : 'text-gray-700'}`}>
-                                {plan === 'pro' ? 'PRO 🔥' : 'Free 💡'}
-                            </span>
-                        </p>
+                    {loading ? (
+                        <p className="text-center">Загрузка подписки...</p>
+                    ) : error ? (
+                        <p className="text-center text-red-500">{error}</p>
+                    ) : (
+                        <>
+                            <p className="text-lg mb-6 text-center">
+                                Текущий план: <span className={`font-bold ${plan === 'pro' ? 'text-green-600' : 'text-gray-700'}`}>{plan === 'pro' ? 'PRO 🔥' : 'Free 💡'}</span>
+                            </p>
 
-                        {plan === 'free' && (
-                            <>
-                                <h3 className="font-semibold mb-2">Что даёт подписка PRO:</h3>
-                                <ul className="list-disc list-inside mb-6 text-gray-700">
-                                    <li>Доступ к QUNAR AI чату</li>
-                                    <li>Расширенные фильтры и инструменты</li>
-                                    <li>Приоритетная поддержка</li>
-                                </ul>
+                            {plan === 'free' && (
+                                <>
+                                    <h3 className="font-semibold mb-2">Что даёт подписка PRO:</h3>
+                                    <ul className="list-disc list-inside mb-6 text-gray-700">
+                                        <li>Доступ к QUNAR AI чату</li>
+                                        <li>Расширенные фильтры и инструменты</li>
+                                        <li>Приоритетная поддержка</li>
+                                    </ul>
 
-                                <button
-                                    onClick={handleUpgrade}
-                                    disabled={upgrading}
-                                    className={`w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded transition ${
-                                        upgrading ? 'opacity-50 cursor-not-allowed' : ''
-                                    }`}
-                                >
-                                    {upgrading ? 'Переход на PRO...' : 'Купить PRO подписку'}
-                                </button>
-                            </>
-                        )}
+                                    <button
+                                        onClick={handleUpgrade}
+                                        disabled={upgrading}
+                                        className={`w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-full transition ${upgrading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    >
+                                        {upgrading ? 'Переход на PRO...' : 'Купить PRO подписку'}
+                                    </button>
+                                </>
+                            )}
 
-                        {plan === 'pro' && (
-                            <p className="text-green-700 font-semibold text-lg">Вы уже пользуетесь PRO-функциями ✅</p>
-                        )}
-                    </>
-                )}
+                            {plan === 'pro' && (
+                                <p className="text-center text-green-700 font-semibold text-lg">Вы уже пользуетесь PRO-функциями ✅</p>
+                            )}
+                        </>
+                    )}
+                </div>
             </main>
+
+            {/* Футер */}
+            <footer className=" bg-green-700 text-white py-4 text-center">
+                &copy; {new Date().getFullYear()} QUNAR.AI. Все права защищены.
+            </footer>
         </div>
     );
 }
