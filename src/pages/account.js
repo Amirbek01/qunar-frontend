@@ -66,35 +66,34 @@ export default function Account() {
                 )}
             </header>
 
-            <main className="flex-1 max-w-6xl mx-auto px-4 pt-32 pb-10">
-                <div className="bg-white p-8 rounded-2xl shadow-md grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Profile Section */}
-                    <div className="flex flex-col items-center">
-                        <div className="bg-gray-300 rounded-full p-4">
-                            <FaUserCircle size={64} className="text-gray-700" />
+            <main className="flex-1 w-full px-4 pt-32 pb-16">
+                <div className="max-w-4xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 bg-white p-10 rounded-2xl shadow-xl">
+                    {/* Левая часть — профиль */}
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="bg-gray-200 rounded-full p-5">
+                            <FaUserCircle size={80} className="text-gray-600" />
                         </div>
-                        <h2 className="text-2xl font-bold mt-4">{user.name || 'Name'}</h2>
-                        <p className="text-gray-500">City</p>
-                        <p className="mt-2 text-sm text-gray-400">Premium: Deactivate</p>
+                        <h2 className="text-3xl font-bold mt-6 text-gray-800">{user.name || 'Имя пользователя'}</h2>
                         <button
                             onClick={handleLogout}
-                            className="mt-4 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg flex items-center gap-2"
+                            className="mt-6 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full font-semibold transition"
                         >
-                            Exit
+                            Выйти
                         </button>
                     </div>
-                
-                </div>
-                {/* Action Buttons Section */}
-                <div className="flex flex-col md:flex-row gap-6 mt-10 justify-center">
-                    <Link href="/subscriptions" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full text-center">
-                        💳 Подписка / QUNAR PRO
-                    </Link>
-                    <Link href="/ai" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full text-center">
-                        🦰 Чат с ИИ
-                    </Link>
+
+                    {/* Правая часть — кнопки */}
+                    <div className="flex flex-col justify-center items-center gap-6">
+                        <Link href="/subscriptions" className="w-full max-w-xs bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full text-center text-lg font-semibold transition">
+                            Qunar PRO
+                        </Link>
+                        <Link href="/ai" className="w-full max-w-xs bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full text-center text-lg font-semibold transition">
+                            Qunar AI
+                        </Link>
+                    </div>
                 </div>
             </main>
+
 
             <footer className="bg-green-700 text-white py-4 text-center">
                 &copy; {new Date().getFullYear()} QUNAR.AI. Все права защищены.

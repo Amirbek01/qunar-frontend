@@ -32,20 +32,22 @@ export default function Home() {
             objectFit="cover"
             priority
           />
-          <div className="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-5">
-            <h1 className="text-white text-5xl font-bold mb-4">
+          <div className="absolute inset-0 flex flex-col justify-center items-center bg-white bg-opacity-5 text-center px-4">
+            <h1 className="text-white text-[32px] md:text-5xl font-bold mb-4">
               Представляем вам <span className="text-green-400" style={{ fontFamily: 'Josefin Sans, sans-serif' }}>QUNAR</span>
             </h1>
-            <p className="text-white text-lg mb-8">
+            <p className="text-white text-base md:text-lg mb-8">
               Спаситель ваших грядок и вашего сада
             </p>
             <Link href="/ai">
-              <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-500 transition">
+              <button className="border border-white text-white px-6 md:px-8 py-2 md:py-3 rounded-full hover:bg-white hover:text-green-500 transition">
                 ПОПРОБОВАТЬ
               </button>
             </Link>
           </div>
         </section>
+
+
 
 
         {/* 🔥 Новый блок "Особенности" */}

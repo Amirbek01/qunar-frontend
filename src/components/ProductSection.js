@@ -67,7 +67,7 @@ export default function ProductSection() {
                         href="/product"
                         className="bg-[#52AA5C] text-white px-8 py-3 rounded-full text-lg hover:bg-[#469A54] transition"
                     >
-                        Маркетплейс
+                        Qunar Market
                     </Link>
                     <Link
                         href="/busket"

@@ -23,12 +23,12 @@ export default function SubscriptionsPage() {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(res => res.json())
-        .then(data => {
-            setPlan(data.plan || 'free');
-        })
-        .catch(() => setError('Ошибка при загрузке подписки'))
-        .finally(() => setLoading(false));
+            .then(res => res.json())
+            .then(data => {
+                setPlan(data.plan || 'free');
+            })
+            .catch(() => setError('Ошибка при загрузке подписки'))
+            .finally(() => setLoading(false));
     }, []);
 
     const handleUpgrade = async () => {
@@ -99,46 +99,46 @@ export default function SubscriptionsPage() {
             </header>
 
             {/* Контент */}
-            <main className="flex flex-1 items-center justify-center px-4 pt-12">
-                <div className="w-full max-w-2xl bg-white p-10 rounded-xl shadow-lg">
-                    <h2 className="text-4xl font-bold mb-6 text-center text-gray-800">Моя подписка</h2>
+            <main className="flex flex-1 items-center justify-center px-4 pt-32 pb-16 bg-gray-100">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl w-full">
+                    {/* Блок Basic */}
+                    <div className="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-green-400">
+                        <h3 className="text-2xl font-bold text-gray-800 mb-4">Basic (Бесплатная подписка)</h3>
+                        <ul className="list-disc list-inside text-gray-700 space-y-2">
+                            <li>Калькулятор удобрений Qunar</li>
+                            <li>Чат-бот на базе ИИ</li>
+                            <li>Маркетплейс "всё для земледелия"</li>
+                            <li>Маркетплейс "всё для дома"</li>
+                        </ul>
+                        <p className="mt-6 text-gray-600 text-sm">Текущий план: {plan === 'free' ? 'Активен 💡' : 'Неактивен'}</p>
+                    </div>
 
-                    {loading ? (
-                        <p className="text-center">Загрузка подписки...</p>
-                    ) : error ? (
-                        <p className="text-center text-red-500">{error}</p>
-                    ) : (
-                        <>
-                            <p className="text-lg mb-6 text-center">
-                                Текущий план: <span className={`font-bold ${plan === 'pro' ? 'text-green-600' : 'text-gray-700'}`}>{plan === 'pro' ? 'PRO 🔥' : 'Free 💡'}</span>
-                            </p>
-
-                            {plan === 'free' && (
-                                <>
-                                    <h3 className="font-semibold mb-2">Что даёт подписка PRO:</h3>
-                                    <ul className="list-disc list-inside mb-6 text-gray-700">
-                                        <li>Доступ к QUNAR AI чату</li>
-                                        <li>Расширенные фильтры и инструменты</li>
-                                        <li>Приоритетная поддержка</li>
-                                    </ul>
-
-                                    <button
-                                        onClick={handleUpgrade}
-                                        disabled={upgrading}
-                                        className={`w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-full transition ${upgrading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                    >
-                                        {upgrading ? 'Переход на PRO...' : 'Купить PRO подписку'}
-                                    </button>
-                                </>
-                            )}
-
-                            {plan === 'pro' && (
-                                <p className="text-center text-green-700 font-semibold text-lg">Вы уже пользуетесь PRO-функциями ✅</p>
-                            )}
-                        </>
-                    )}
+                    {/* Блок Pro */}
+                    <div className="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-yellow-500 flex flex-col justify-between">
+                        <div>
+                            <h3 className="text-2xl font-bold text-gray-800 mb-4">Pro — 7990 ₸ <span className="line-through text-sm text-gray-400 ml-2">8990 ₸</span></h3>
+                            <p className="mb-4 text-sm text-gray-600">Расширенная подписка с дополнительными возможностями:</p>
+                            <ul className="list-disc list-inside text-gray-700 space-y-2">
+                                <li>Прогноз погоды под конкретное поле</li>
+                                <li>Рекомендации по минералам</li>
+                                <li>Глубокий анализ почвы и советы</li>
+                            </ul>
+                        </div>
+                        {plan === 'pro' ? (
+                            <p className="text-center text-green-700 font-semibold text-lg mt-6">Вы уже пользуетесь PRO ✅</p>
+                        ) : (
+                            <button
+                                onClick={handleUpgrade}
+                                disabled={upgrading}
+                                className={`mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-full transition ${upgrading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            >
+                                {upgrading ? 'Переход на PRO...' : 'Купить PRO подписку'}
+                            </button>
+                        )}
+                    </div>
                 </div>
             </main>
+
 
             {/* Футер */}
             <footer className=" bg-green-700 text-white py-4 text-center">
