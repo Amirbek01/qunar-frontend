@@ -72,7 +72,7 @@ export default function ProductPage() {
             name: product.name,
             description: product.description,
             price: parseFloat(product.price),
-            image: product.image || '/placeholder.png',
+            image: product.metadata.image || '/placeholder.png',
             quantity: 1
         });
         setToast(`Добавлено: ${product.name}`);
@@ -171,7 +171,7 @@ export default function ProductPage() {
                         {products.map((product) => (
                             <div key={product.id} className="bg-white p-4 rounded shadow flex flex-col justify-between">
                                 <img
-                                    src={product.image || '/placeholder.png'}
+                                    src={product.metadata.image || '/placeholder.png'}
                                     alt={product.name}
                                     className="w-full h-48 object-cover mb-4 rounded"
                                 />
